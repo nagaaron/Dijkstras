@@ -19,6 +19,7 @@ def dijkstra():
     openList =[]
     openList.append(startNode)
     
+    
     while True:
     
         # find node in openList with smallest cost set it to currentNode
@@ -28,9 +29,10 @@ def dijkstra():
             if node.cost <= currentNode.cost:
                 currentIndex = index
                 currentNode = node
+        
         # stop if currentNode is endNode
         if currentNode.pos == endNode.pos:
-            
+            print('-')
             goalNode = currentNode
             path  = [goalNode]
             while goalNode.pos != startNode.pos:
@@ -57,16 +59,18 @@ def dijkstra():
             return path
         # find all neighbors of currentNode
         neighbors =[]
-        currentCol = currentNode.pos[1]
+        
         currentRow = currentNode.pos[0]
+        currentCol = currentNode.pos[1]
         for col in range(-1,2):
             for row in range(-1,2):
-                if col !=0 and row != 0:
-                    neighborRow = row +currentRow
+                if (col == 0 and row == 0)==False:
+                    neighborRow = row + currentRow
                     neighborCol = col + currentCol
-                    if (neighborCol,neighborRow) in grid:
-                        neighbors.append(Node((currentRow,currentCol)))
-        
+                    if (neighborRow,neighborCol) in grid:
+                        neighbors.append(Node((neighborRow,neighborCol)))
+                        
+
         # calculate costs for all neighbors
         for neighbor in neighbors:
             additionalcost = ((neighbor.pos[0] - currentNode.pos[0])**2+(neighbor.pos[1]- currentNode.pos[1])**2)**0.5
@@ -77,11 +81,13 @@ def dijkstra():
             inopen = False
             for openNode in openList:
                 if neighbor.pos == openNode.pos:
+                    inopen = True
                     if neighbor.cost < openNode.cost:
                         openNode.cost = neighbor.cost
-                        inopen = True
                         break
             if inopen == False:
                 openList.append(neighbor)
+            print('__')
+        
         
 print(dijkstra())
