@@ -3,15 +3,15 @@ import pygame
 inf = float('inf')
 
 start = (0,0)
-end  = (49,49)
+end  = (14,10)
 
 graphs = {}
 
 screen = 500
 
-width = 50
+width = 24
 
-columns = int(screen/width)
+columns = int(screen/(width+1))
 
 for col in range(width+1):
     for row in range(width+1):
@@ -43,18 +43,19 @@ for node in graphs:
 costs[start]=0
 
 def draw_grid(window,screen,field):
-    for x in range(0,width,field):
-        pygame.draw.line(window,(0,0,0),(x,0),(x,screen))
-        pygame.draw.line(window,(0,0,0),(0,x),(screen,x))
+    for x in range(0,screen,field):
+        pygame.draw.line(window,(255,255,255),(x,0),(x,screen))
+        pygame.draw.line(window,(255,255,255),(0,x),(screen,x))
         
 def draw_list(window,dlist,columns,color):
     for x in dlist:
         pygame.draw.rect(window,color,(x[0]*columns,x[1]*columns,columns,columns))
         
-    
 def find_cheapest_node(costs,openList):
+    
     lowestCost = inf
-    cheapestNode = ''
+    cheapestNode = ' '
+    
     for node in costs:
         if node in openList and costs[node] <= lowestCost:
             lowestCost = costs[node]
@@ -66,7 +67,6 @@ if  __name__ == '__main__':
     clock = pygame.time.Clock()
     window = pygame.display.set_mode((screen,screen))
     pygame.display.set_caption("Pathfinder")
-    window.fill((255,255,255))
     
     openList = [node for node in costs]
     closedList = []
@@ -87,9 +87,9 @@ if  __name__ == '__main__':
         openList.remove(node)
         closedList.append(node)
         node = find_cheapest_node(costs,openList)
-        window.fill((255,255,255))
+        window.fill((0,0,0))
         draw_grid(window,screen, columns)
-        draw_list(window,openList,columns,(255,0,0))
+        #draw_list(window,openList,columns,(255,0,0))
         draw_list(window,closedList,columns,(0,255,0))
         pygame.display.update() 
         
